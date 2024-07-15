@@ -1,0 +1,72 @@
+{
+  "name": "@cdandrea/currying-ts",
+  "version": "1.0.1",
+  "description": "100% type-safe memoize() function written in TS",
+  "main": "dist/curry.js",
+  "types": "dist/curry.d.ts",
+  "files": [
+    "LICENSE.txt",
+    "dist/curry.js",
+    "dist/curry.d.ts",
+    "dist/curry.d.ts.map",
+    "src/curry.ts"
+  ],
+  "keywords": [
+    "typescript",
+    "curry",
+    "currying",
+    "type-safe",
+    "100% type-safe",
+    "fully type-safe",
+    "typed",
+    "100% typed",
+    "fully typed",
+    "supports up to 30 parameters"
+  ],
+  "author": "Cassiano D'Andrea",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "@swc-node/register": "^1.9.2",
+    "acorn": "^8.12.0",
+    "acorn-walk": "^8.3.3",
+    "arg": "^4.1.3",
+    "buffer-from": "^1.1.2",
+    "colorette": "^2.0.20",
+    "create-require": "^1.1.1",
+    "debug": "^4.3.5",
+    "diff": "^4.0.2",
+    "eslint": "^9.6.0",
+    "globals": "^15.8.0",
+    "make-error": "^1.3.6",
+    "ms": "^2.1.2",
+    "pirates": "^4.0.6",
+    "source-map": "^0.6.1",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.2",
+    "typescript-eslint": "^7.15.0",
+    "undici-types": "^5.26.5",
+    "v8-compile-cache-lib": "^3.0.1",
+    "yn": "^3.1.1"
+  },
+  "scripts": {
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "prettier-check": "prettier --check --arrow-parens avoid --single-quote --no-semi --trailing-comma all 'src/**/*.{ts,tsx}'",
+    "prettier": "prettier --write --arrow-parens avoid --single-quote --no-semi --trailing-comma all 'src/**/*.{ts,tsx}'",
+    "test": "deno test tests/test.ts",
+    "test:full": "npm run lint && npm run prettier && npm run test",
+    "build": "npm run test:full && tsc",
+    "prepublishOnly": "npm run build",
+    "publishLib": "npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cassiano/currying-ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cassiano/currying-ts/issues"
+  },
+  "homepage": "https://github.com/cassiano/currying-ts"
+}
