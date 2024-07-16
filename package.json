@@ -1,7 +1,7 @@
 {
   "name": "@cdandrea/currying-ts",
   "version": "1.0.2",
-  "description": "100% type-safe memoize() function written in TS",
+  "description": "100% type-safe curry() function written in TS",
   "main": "dist/curry.js",
   "types": "dist/curry.d.ts",
   "files": [
