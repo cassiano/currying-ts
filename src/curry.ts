@@ -3,8 +3,8 @@
  *
  * @template T - The return type of the curried function (always inferred automatically by TS).
  * @template P1, P2 … Pn - The types of each of the n function's arguments (always inferred automatically by TS).
- * @param {MemoizeFnType<T>} fn - The function to be curried.
- * @returns {(p1: P1) => (p2: P2) … (pn: Pn) => T} - The curried function.
+ * @param {(p1: P1, p2: P2, … pn: Pn) => T} fn - The function to be curried.
+ * @returns {(p1: P1) => (p2: P2) => … (pn: Pn) => T} - The curried function.
  */
 
 // TS types generator: https://tsplay.dev/mA18Xm
