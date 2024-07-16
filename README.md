@@ -39,11 +39,13 @@ import { curry } from '@cdandrea/currying-ts'
 
 const sum = curry((a: number, b: number) => a + b)
 
-// `sum()` expects a number, corresponding to the original function's 1st parameter (`a`).
+// `sum()` expects a number, corresponding to the
+// original function's 1st parameter (`a`).
 const sum10 = sum(10)
 const sum20 = sum(20)
 
-// `sum10()` also expects a number, corresponding to the original function's 2nd parameter (`b`).
+// `sum10()` also expects a number, corresponding
+// to the original function's 2nd parameter (`b`).
 console.log(sum10(5)) // Prints 15.
 console.log(sum10(100)) // Prints 110.
 
