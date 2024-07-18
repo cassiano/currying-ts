@@ -1,6 +1,6 @@
 {
   "name": "@cdandrea/currying-ts",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "100% type-safe curry() function written in TS",
   "main": "dist/curry.js",
   "types": "dist/curry.d.ts",
