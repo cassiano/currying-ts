@@ -1,3 +1,5 @@
+type CurryReturnType<T> = (arg: unknown) => T | CurryReturnType<T>
+
 /**
  * A function that curries the given function `fn`
  *
@@ -44,7 +46,7 @@
 // Copy generated types above this line
 // ====================================
 
-export function curry<T>(fn: (...args: unknown[]) => T) {
+export function curry<T>(fn: (...args: unknown[]) => T): CurryReturnType<T> {
   const arity = fn.length
 
   const curriedFn = (...currentArgs: unknown[]) =>
