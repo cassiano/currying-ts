@@ -47,11 +47,10 @@
 export function curry<T>(fn: (...args: unknown[]) => T) {
   const arity = fn.length
 
-  const curriedFn = (...originalArgs: unknown[]) =>
-    originalArgs.length >= arity // Excessive arguments will be discarded.
-      ? fn(...originalArgs)
-      : (...missingArgs: unknown[]) =>
-          curriedFn(...originalArgs, ...missingArgs)
+  const curriedFn = (...currentArgs: unknown[]) =>
+    currentArgs.length >= arity // PS: excessive arguments will be discarded.
+      ? fn(...currentArgs)
+      : (nextArg: unknown) => curriedFn(...currentArgs, nextArg)
 
-  return curriedFn
+  return (arg: unknown) => curriedFn(arg)
 }
