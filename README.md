@@ -1,6 +1,6 @@
 # 100% type-safe `curry()` function written in TS
 
-> [Currying](https://en.wikipedia.org/wiki/Currying) is the technique of translating a function that takes multiple arguments into a sequence of families of functions, each taking a single argument. Source: Wikipedia.
+> According to Wikipedia, "[Currying](https://en.wikipedia.org/wiki/Currying) is the technique of translating a function that takes multiple arguments into a sequence of families of functions, each taking a single argument".
 >
 > It is essentially a programming style which favors reuse, by creating reusable functions from previous function (partial) calls.
 >
