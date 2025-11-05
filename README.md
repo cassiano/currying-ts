@@ -11,7 +11,7 @@
 - 100% type-safe
 - Supports functions that have up to 30 parameters
 - Fully compatible with JavaScript
-- Very small (only 457 bytes gzipped after bundling)
+- Very small (only 372 bytes gzipped after bundling)
 - No external dependencies
 
 ## Installation

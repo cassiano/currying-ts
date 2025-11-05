@@ -1,59 +1,53 @@
-type CurryReturnType<T> = (arg: unknown) => T | CurryReturnType<T>
-type CurryCallbackType<T> = (...args: unknown[]) => T
+type CurriedFunction<Fn extends FnType> =
+  Parameters<Fn> extends [
+    // At least 2 args were supplied?
+    infer FirstArg,
+    infer SecondArg,
+    ...infer RemainingArgs,
+  ]
+    ? (
+        arg: FirstArg,
+      ) => CurriedFunctionSequence<
+        [SecondArg, ...RemainingArgs],
+        ReturnType<Fn>
+      >
+    : never
+
+// Alternative way of cheking if a function has at least 2 arguments:
+//
+// type CurriedFunction<Fn extends FnType> = Parameters<Fn> extends [infer FirstArg, ...infer RemainingArgs] // At least 1 arg was supplied?
+//   ? RemainingArgs extends [infer _SecondArg, ...infer _OtherArgs] // `RemainingFns` has at least 1 more arg?
+//     ? (arg: FirstArg) => CurriedFunctionSequence<RemainingArgs, ReturnType<Fn>>
+//     : never
+//   : never
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// deno-lint-ignore no-explicit-any
+type FnType = (...args: any[]) => unknown
+
+type CurriedFunctionSequence<Args extends unknown[], RetType> = Args extends [
+  infer FirstArg,
+  ...infer RemainingArgs,
+]
+  ? (arg: FirstArg) => CurriedFunctionSequence<RemainingArgs, RetType>
+  : RetType
 
 /**
  * A function that curries the given function `fn`
  *
- * @template T - The return type of the curried function (always inferred automatically by TS).
- * @template P1, P2 … Pn - The types of each of the n function's arguments (always inferred automatically by TS).
- * @param {(p1: P1, p2: P2, … pn: Pn) => T} fn - The function to be curried.
- * @returns {(p1: P1) => (p2: P2) => … (pn: Pn) => T} - The curried function.
+ * @template Fn - The signature of the curried function (always inferred automatically by TS).
+ * @param {Fn} fn - The function to be curried.
+ * @returns {CurriedFunction<Fn>} - The curried function.
  */
 
-// TS types generator: https://tsplay.dev/mA18Xm
-
-// ====================================
-// Copy generated types below this line
-/* prettier-ignore */ export function curry<T, P1>(fn: (p1: P1) => T): (p1: P1) => T;
-/* prettier-ignore */ export function curry<T, P1, P2>(fn: (p1: P1, p2: P2) => T): (p1: P1) => (p2: P2) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3>(fn: (p1: P1, p2: P2, p3: P3) => T): (p1: P1) => (p2: P2) => (p3: P3) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4>(fn: (p1: P1, p2: P2, p3: P3, p4: P4) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23, P24>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23, p24: P24) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => (p24: P24) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23, P24, P25>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23, p24: P24, p25: P25) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => (p24: P24) => (p25: P25) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23, P24, P25, P26>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23, p24: P24, p25: P25, p26: P26) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => (p24: P24) => (p25: P25) => (p26: P26) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23, P24, P25, P26, P27>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23, p24: P24, p25: P25, p26: P26, p27: P27) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => (p24: P24) => (p25: P25) => (p26: P26) => (p27: P27) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23, P24, P25, P26, P27, P28>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23, p24: P24, p25: P25, p26: P26, p27: P27, p28: P28) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => (p24: P24) => (p25: P25) => (p26: P26) => (p27: P27) => (p28: P28) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23, P24, P25, P26, P27, P28, P29>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23, p24: P24, p25: P25, p26: P26, p27: P27, p28: P28, p29: P29) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => (p24: P24) => (p25: P25) => (p26: P26) => (p27: P27) => (p28: P28) => (p29: P29) => T;
-/* prettier-ignore */ export function curry<T, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20, P21, P22, P23, P24, P25, P26, P27, P28, P29, P30>(fn: (p1: P1, p2: P2, p3: P3, p4: P4, p5: P5, p6: P6, p7: P7, p8: P8, p9: P9, p10: P10, p11: P11, p12: P12, p13: P13, p14: P14, p15: P15, p16: P16, p17: P17, p18: P18, p19: P19, p20: P20, p21: P21, p22: P22, p23: P23, p24: P24, p25: P25, p26: P26, p27: P27, p28: P28, p29: P29, p30: P30) => T): (p1: P1) => (p2: P2) => (p3: P3) => (p4: P4) => (p5: P5) => (p6: P6) => (p7: P7) => (p8: P8) => (p9: P9) => (p10: P10) => (p11: P11) => (p12: P12) => (p13: P13) => (p14: P14) => (p15: P15) => (p16: P16) => (p17: P17) => (p18: P18) => (p19: P19) => (p20: P20) => (p21: P21) => (p22: P22) => (p23: P23) => (p24: P24) => (p25: P25) => (p26: P26) => (p27: P27) => (p28: P28) => (p29: P29) => (p30: P30) => T;
-// Copy generated types above this line
-// ====================================
-
-export function curry<T>(fn: CurryCallbackType<T>): CurryReturnType<T> {
-  const arity = fn.length
-
+export const curry = <Fn extends FnType>(
+  fn: Fn,
+  arity = fn.length,
+): CurriedFunction<Fn> => {
   const curriedFn = (...currentArgs: unknown[]) =>
-    currentArgs.length >= arity // PS: excessive arguments will be discarded.
+    currentArgs.length >= arity // Note: excessive arguments will be discarded.
       ? fn(...currentArgs)
       : (nextArg: unknown) => curriedFn(...currentArgs, nextArg)
 
-  return (arg: unknown) => curriedFn(arg)
+  return curriedFn as CurriedFunction<Fn>
 }
